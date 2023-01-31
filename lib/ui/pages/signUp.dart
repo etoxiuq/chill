@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SignUp extends StatelessWidget {
   final UserRepository _userRepository;
 
-  SignUp({@required UserRepository userRepository})
+  SignUp({required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository;
 

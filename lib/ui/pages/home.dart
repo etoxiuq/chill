@@ -2,7 +2,6 @@ import 'package:chill/bloc/authentication/authentication_bloc.dart';
 import 'package:chill/bloc/authentication/authentication_state.dart';
 import 'package:chill/repositories/userRepository.dart';
 import 'package:chill/ui/pages/profile.dart';
-
 import 'package:chill/ui/pages/splash.dart';
 import 'package:chill/ui/widgets/tabs.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,7 @@ import 'login.dart';
 class Home extends StatelessWidget {
   final UserRepository _userRepository;
 
-  Home({@required UserRepository userRepository})
+  Home({required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository;
 
@@ -34,7 +33,7 @@ class Home extends StatelessWidget {
           if (state is AuthenticatedButNotSet) {
             return Profile(
               userRepository: _userRepository,
-              userId: state.userId,
+              userId: state.userId!,
             );
           }
           if (state is Unauthenticated) {

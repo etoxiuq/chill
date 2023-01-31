@@ -2,32 +2,32 @@ import 'package:chill/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchRepository {
-  final Firestore _firestore;
+  final FirebaseFirestore _firestore;
 
-  SearchRepository({Firestore firestore})
-      : _firestore = firestore ?? Firestore.instance;
+  SearchRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore ?? FirebaseFirestore.instance;
 
   Future<User> chooseUser(currentUserId, selectedUserId, name, photoUrl) async {
     await _firestore
         .collection('users')
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('chosenList')
-        .document(selectedUserId)
-        .setData({});
+        .doc(selectedUserId)
+        .set({});
 
     await _firestore
         .collection('users')
-        .document(selectedUserId)
+        .doc(selectedUserId)
         .collection('chosenList')
-        .document(currentUserId)
-        .setData({});
+        .doc(currentUserId)
+        .set({});
 
     await _firestore
         .collection('users')
-        .document(selectedUserId)
+        .doc(selectedUserId)
         .collection('selectedList')
-        .document(currentUserId)
-        .setData({
+        .doc(currentUserId)
+        .set({
       'name': name,
       'photoUrl': photoUrl,
     });
@@ -37,43 +37,36 @@ class SearchRepository {
   passUser(currentUserId, selectedUserId) async {
     await _firestore
         .collection('users')
-        .document(selectedUserId)
+        .doc(selectedUserId)
         .collection('chosenList')
-        .document(currentUserId)
-        .setData({});
+        .doc(currentUserId)
+        .set({});
 
     await _firestore
         .collection('users')
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('chosenList')
-        .document(selectedUserId)
-        .setData({});
+        .doc(selectedUserId)
+        .set({});
     return getUser(currentUserId);
   }
 
   Future getUserInterests(userId) async {
-    User currentUser = User();
-
-    await _firestore.collection('users').document(userId).get().then((user) {
-      currentUser.name = user['name'];
-      currentUser.photo = user['photoUrl'];
-      currentUser.gender = user['gender'];
-      currentUser.interestedIn = user['interestedIn'];
-    });
-    return currentUser;
+    return User.fromSnapshot(
+        await _firestore.collection('users').doc(userId).get());
   }
 
   Future<List> getChosenList(userId) async {
     List<String> chosenList = [];
     await _firestore
         .collection('users')
-        .document(userId)
+        .doc(userId)
         .collection('chosenList')
-        .getDocuments()
+        .get()
         .then((docs) {
-      for (var doc in docs.documents) {
-        if (docs.documents != null) {
-          chosenList.add(doc.documentID);
+      for (var doc in docs.docs) {
+        if (docs != null) {
+          chosenList.add(doc.id);
         }
       }
     });
@@ -81,23 +74,17 @@ class SearchRepository {
   }
 
   Future<User> getUser(userId) async {
-    User _user = User();
-    List<String> chosenList = await getChosenList(userId);
+    late User _user;
+    List chosenList = await getChosenList(userId);
     User currentUser = await getUserInterests(userId);
 
-    await _firestore.collection('users').getDocuments().then((users) {
-      for (var user in users.documents) {
-        if ((!chosenList.contains(user.documentID)) &&
-            (user.documentID != userId) &&
+    await _firestore.collection('users').get().then((users) {
+      for (var user in users.docs) {
+        if ((!chosenList.contains(user.id)) &&
+            (user.id != userId) &&
             (currentUser.interestedIn == user['gender']) &&
             (user['interestedIn'] == currentUser.gender)) {
-          _user.uid = user.documentID;
-          _user.name = user['name'];
-          _user.photo = user['photoUrl'];
-          _user.age = user['age'];
-          _user.location = user['location'];
-          _user.gender = user['gender'];
-          _user.interestedIn = user['interestedIn'];
+          _user = User.fromSnapshot(user);
           break;
         }
       }

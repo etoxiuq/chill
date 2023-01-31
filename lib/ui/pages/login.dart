@@ -9,7 +9,7 @@ import '../constants.dart';
 class Login extends StatelessWidget {
   final UserRepository _userRepository;
 
-  Login({@required UserRepository userRepository})
+  Login({required UserRepository userRepository})
       : assert(userRepository != null),
         _userRepository = userRepository;
 

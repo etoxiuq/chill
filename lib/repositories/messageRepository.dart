@@ -3,15 +3,15 @@ import 'package:chill/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageRepository {
-  final Firestore _firestore;
+  final FirebaseFirestore _firestore;
 
-  MessageRepository({Firestore firestore})
-      : _firestore = firestore ?? Firestore.instance;
+  MessageRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore ?? FirebaseFirestore.instance;
 
   Stream<QuerySnapshot> getChats({userId}) {
     return _firestore
         .collection('users')
-        .document(userId)
+        .doc(userId)
         .collection('chats')
         .orderBy('timestamp', descending: true)
         .snapshots();
@@ -20,51 +20,28 @@ class MessageRepository {
   Future deleteChat({currentUserId, selectedUserId}) async {
     await _firestore
         .collection('users')
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('chats')
-        .document(selectedUserId)
+        .doc(selectedUserId)
         .delete();
   }
 
   Future<User> getUserDetail({userId}) async {
-    User _user = User();
-
-    await _firestore.collection('users').document(userId).get().then((user) {
-      _user.uid = user.documentID;
-      _user.name = user['name'];
-      _user.photo = user['photoUrl'];
-      _user.age = user['age'];
-      _user.location = user['location'];
-      _user.gender = user['gender'];
-      _user.interestedIn = user['interestedIn'];
-    });
-    return _user;
+    return User.fromSnapshot(
+        await _firestore.collection('users').doc(userId).get());
   }
 
   Future<Message> getLastMessage({currentUserId, selectedUserId}) async {
-    Message _message = Message();
-
-    await _firestore
+    QuerySnapshot first = await _firestore
         .collection('users')
-        .document(currentUserId)
+        .doc(currentUserId)
         .collection('chats')
-        .document(selectedUserId)
+        .doc(selectedUserId)
         .collection('messages')
         .orderBy('timestamp', descending: true)
-        .snapshots()
-        .first
-        .then((doc) async {
-      await _firestore
-          .collection('messages')
-          .document(doc.documents.first.documentID)
-          .get()
-          .then((message) {
-        _message.text = message['text'];
-        _message.photoUrl = message['photoUrl'];
-        _message.timestamp = message['timestamp'];
-      });
-    });
-
-    return _message;
+        .get();
+    DocumentSnapshot snapshot =
+        await _firestore.collection('messages').doc(first.docs.first.id).get();
+    return Message.fromSnapshot(snapshot);
   }
 }

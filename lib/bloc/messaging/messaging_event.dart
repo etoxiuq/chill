@@ -11,7 +11,7 @@ abstract class MessagingEvent extends Equatable {
 class SendMessageEvent extends MessagingEvent {
   final Message message;
 
-  SendMessageEvent({this.message});
+  SendMessageEvent({required this.message});
 
   @override
   List<Object> get props => [message];
@@ -20,8 +20,14 @@ class SendMessageEvent extends MessagingEvent {
 class MessageStreamEvent extends MessagingEvent {
   final String currentUserId, selectedUserId;
 
-  MessageStreamEvent({this.currentUserId, this.selectedUserId});
+  MessageStreamEvent({
+    required this.currentUserId,
+    required this.selectedUserId,
+  });
 
   @override
-  List<Object> get props => [currentUserId, selectedUserId];
+  List<Object> get props => [
+        currentUserId,
+        selectedUserId,
+      ];
 }

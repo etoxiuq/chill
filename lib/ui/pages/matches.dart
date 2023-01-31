@@ -16,22 +16,23 @@ import 'messaging.dart';
 class Matches extends StatefulWidget {
   final String userId;
 
-  const Matches({this.userId});
+  const Matches({required this.userId});
 
   @override
   _MatchesState createState() => _MatchesState();
 }
 
 class _MatchesState extends State<Matches> {
-  MatchesRepository matchesRepository = MatchesRepository();
-  MatchesBloc _matchesBloc;
+  MatchesRepository matchesRepository =
+      MatchesRepository(firestore: FirebaseFirestore.instance);
+  late MatchesBloc _matchesBloc;
 
-  int difference;
+  late int difference;
 
   getDifference(GeoPoint userLocation) async {
-    Position position = await Geolocator().getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
 
-    double location = await Geolocator().distanceBetween(userLocation.latitude,
+    double location = Geolocator.distanceBetween(userLocation.latitude,
         userLocation.longitude, position.latitude, position.longitude);
 
     difference = location.toInt();
@@ -73,8 +74,8 @@ class _MatchesState extends State<Matches> {
                       child: Container(),
                     );
                   }
-                  if (snapshot.data.documents != null) {
-                    final user = snapshot.data.documents;
+                  if (snapshot.data?.docs != null) {
+                    final user = snapshot.data?.docs;
 
                     return SliverGrid(
                       delegate: SliverChildBuilderDelegate(
@@ -82,7 +83,7 @@ class _MatchesState extends State<Matches> {
                           return GestureDetector(
                             onTap: () async {
                               User selectedUser = await matchesRepository
-                                  .getUserDetails(user[index].documentID);
+                                  .getUserDetails(user?[index].id);
                               User currentUser = await matchesRepository
                                   .getUserDetails(widget.userId);
                               await getDifference(selectedUser.location);
@@ -186,20 +187,20 @@ class _MatchesState extends State<Matches> {
                             },
                             child: profileWidget(
                               padding: size.height * 0.01,
-                              photo: user[index].data['photoUrl'],
+                              photo: user?[index]['photoUrl'],
                               photoWidth: size.width * 0.5,
                               photoHeight: size.height * 0.3,
                               clipRadius: size.height * 0.01,
                               containerHeight: size.height * 0.03,
                               containerWidth: size.width * 0.5,
                               child: Text(
-                                "  " + user[index].data['name'],
+                                "  " + user?[index]['name'],
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
                           );
                         },
-                        childCount: user.length,
+                        childCount: user?.length,
                       ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -228,15 +229,15 @@ class _MatchesState extends State<Matches> {
                       child: Container(),
                     );
                   }
-                  if (snapshot.data.documents != null) {
-                    final user = snapshot.data.documents;
+                  if (snapshot.data?.docs != null) {
+                    final user = snapshot.data?.docs;
                     return SliverGrid(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           return GestureDetector(
                             onTap: () async {
                               User selectedUser = await matchesRepository
-                                  .getUserDetails(user[index].documentID);
+                                  .getUserDetails(user?[index].id);
                               User currentUser = await matchesRepository
                                   .getUserDetails(widget.userId);
 
@@ -375,20 +376,20 @@ class _MatchesState extends State<Matches> {
                             },
                             child: profileWidget(
                               padding: size.height * 0.01,
-                              photo: user[index].data['photoUrl'],
+                              photo: user?[index]['photoUrl'],
                               photoWidth: size.width * 0.5,
                               photoHeight: size.height * 0.3,
                               clipRadius: size.height * 0.01,
                               containerHeight: size.height * 0.03,
                               containerWidth: size.width * 0.5,
                               child: Text(
-                                "  " + user[index].data['name'],
+                                "  " + user?[index]['name'],
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
                           );
                         },
-                        childCount: user.length,
+                        childCount: user?.length,
                       ),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2),

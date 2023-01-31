@@ -14,22 +14,23 @@ import 'package:geolocator/geolocator.dart';
 class Search extends StatefulWidget {
   final String userId;
 
-  const Search({this.userId});
+  const Search({required this.userId});
 
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  final SearchRepository _searchRepository = SearchRepository();
-  SearchBloc _searchBloc;
-  User _user, _currentUser;
-  int difference;
+  final SearchRepository _searchRepository =
+      SearchRepository(firestore: FirebaseFirestore.instance);
+  late SearchBloc _searchBloc;
+  late User _user, _currentUser;
+  late int difference;
 
   getDifference(GeoPoint userLocation) async {
-    Position position = await Geolocator().getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
 
-    double location = await Geolocator().distanceBetween(userLocation.latitude,
+    double location = Geolocator.distanceBetween(userLocation.latitude,
         userLocation.longitude, position.latitude, position.longitude);
 
     difference = location.toInt();

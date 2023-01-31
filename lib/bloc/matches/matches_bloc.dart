@@ -1,16 +1,18 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/repositories/matchesRepository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meta/meta.dart';
+
 import './bloc.dart';
 
 class MatchesBloc extends Bloc<MatchesEvent, MatchesState> {
   MatchesRepository _matchesRepository;
 
-  MatchesBloc({@required MatchesRepository matchesRepository})
+  MatchesBloc({required MatchesRepository matchesRepository})
       : assert(matchesRepository != null),
-        _matchesRepository = matchesRepository;
+        _matchesRepository = matchesRepository,
+        super(LoadingState());
 
   @override
   MatchesState get initialState => LoadingState();
@@ -42,7 +44,8 @@ class MatchesBloc extends Bloc<MatchesEvent, MatchesState> {
     }
   }
 
-  Stream<MatchesState> _mapLoadListToState({String currentUserId}) async* {
+  Stream<MatchesState> _mapLoadListToState(
+      {required String currentUserId}) async* {
     yield LoadingState();
 
     Stream<QuerySnapshot> matchedList =
@@ -55,23 +58,24 @@ class MatchesBloc extends Bloc<MatchesEvent, MatchesState> {
   }
 
   Stream<MatchesState> _mapDeleteUserToState(
-      {String currentUserId, String selectedUserId}) async* {
+      {required String currentUserId, required String selectedUserId}) async* {
     _matchesRepository.deleteUser(currentUserId, selectedUserId);
   }
 
   Stream<MatchesState> _mapOpenChatToState(
-      {String currentUserId, String selectedUserId}) async* {
+      {required String currentUserId, required String selectedUserId}) async* {
     _matchesRepository.openChat(
         currentUserId: currentUserId, selectedUserId: selectedUserId);
   }
 
-  Stream<MatchesState> _mapAcceptUserToState(
-      {String currentUserId,
-      String selectedUserId,
-      String currentUserName,
-      String currentUserPhotoUrl,
-      String selectedUserName,
-      String selectedUserPhotoUrl}) async* {
+  Stream<MatchesState> _mapAcceptUserToState({
+    required String currentUserId,
+    required String selectedUserId,
+    required String currentUserName,
+    required String currentUserPhotoUrl,
+    required String selectedUserName,
+    required String selectedUserPhotoUrl,
+  }) async* {
     await _matchesRepository.selectUser(
         currentUserId,
         selectedUserId,

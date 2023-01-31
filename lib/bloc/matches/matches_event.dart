@@ -10,7 +10,7 @@ abstract class MatchesEvent extends Equatable {
 class LoadListsEvent extends MatchesEvent {
   final String userId;
 
-  LoadListsEvent({this.userId});
+  LoadListsEvent({required this.userId});
 
   @override
   List<Object> get props => [userId];
@@ -24,13 +24,14 @@ class AcceptUserEvent extends MatchesEvent {
       currentUserName,
       currentUserPhotoUrl;
 
-  AcceptUserEvent(
-      {this.currentUser,
-      this.selectedUser,
-      this.selectedUserName,
-      this.selectedUserPhotoUrl,
-      this.currentUserName,
-      this.currentUserPhotoUrl});
+  AcceptUserEvent({
+    required this.currentUser,
+    required this.selectedUser,
+    required this.selectedUserName,
+    required this.selectedUserPhotoUrl,
+    required this.currentUserName,
+    required this.currentUserPhotoUrl,
+  });
 
   @override
   List<Object> get props => [
@@ -46,7 +47,10 @@ class AcceptUserEvent extends MatchesEvent {
 class DeleteUserEvent extends MatchesEvent {
   final String currentUser, selectedUser;
 
-  DeleteUserEvent({this.currentUser, this.selectedUser});
+  DeleteUserEvent({
+    required this.currentUser,
+    required this.selectedUser,
+  });
 
   @override
   List<Object> get props => [
@@ -58,7 +62,10 @@ class DeleteUserEvent extends MatchesEvent {
 class OpenChatEvent extends MatchesEvent {
   final String currentUser, selectedUser;
 
-  OpenChatEvent({this.currentUser, this.selectedUser});
+  OpenChatEvent({
+    required this.currentUser,
+    required this.selectedUser,
+  });
 
   @override
   List<Object> get props => [

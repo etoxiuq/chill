@@ -14,7 +14,7 @@ class ChatLoadingState extends MessageState {}
 class ChatLoadedState extends MessageState {
   final Stream<QuerySnapshot> chatStream;
 
-  ChatLoadedState({this.chatStream});
+  ChatLoadedState({required this.chatStream});
 
   @override
   List<Object> get props => [chatStream];

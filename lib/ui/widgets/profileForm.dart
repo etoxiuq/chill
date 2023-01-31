@@ -48,8 +48,8 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   _getLocation() async {
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
     location = GeoPoint(position.latitude, position.longitude);
   }
@@ -89,7 +89,7 @@ class _ProfileFormState extends State<ProfileForm> {
       listener: (context, state) {
         if (state.isFailure) {
           print("Failed");
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -105,7 +105,7 @@ class _ProfileFormState extends State<ProfileForm> {
         }
         if (state.isSubmitting) {
           print("Submitting");
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -142,11 +142,13 @@ class _ProfileFormState extends State<ProfileForm> {
                       child: photo == null
                           ? GestureDetector(
                               onTap: () async {
-                                File getPic = await FilePicker.getFile(
-                                    type: FileType.image);
-                                if (getPic != null) {
+                                FilePickerResult result = await FilePicker
+                                    .platform
+                                    .pickFiles(type: FileType.image);
+                                if (result != null) {
+                                  File file = File(result.files.single.path);
                                   setState(() {
-                                    photo = getPic;
+                                    photo = file;
                                   });
                                 }
                               },
@@ -154,11 +156,13 @@ class _ProfileFormState extends State<ProfileForm> {
                             )
                           : GestureDetector(
                               onTap: () async {
-                                File getPic = await FilePicker.getFile(
-                                    type: FileType.image);
-                                if (getPic != null) {
+                                FilePickerResult result = await FilePicker
+                                    .platform
+                                    .pickFiles(type: FileType.image);
+                                if (result != null) {
+                                  File file = File(result.files.single.path);
                                   setState(() {
-                                    photo = getPic;
+                                    photo = file;
                                   });
                                 }
                               },

@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isFailure) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -93,7 +93,7 @@ class _LoginFormState extends State<LoginForm> {
 
         if (state.isSubmitting) {
           print("isSubmitting");
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -142,7 +142,6 @@ class _LoginFormState extends State<LoginForm> {
                     padding: EdgeInsets.all(size.height * 0.02),
                     child: TextFormField(
                       controller: _emailController,
-                      autovalidate: true,
                       validator: (_) {
                         return !state.isEmailValid ? "Invalid Email" : null;
                       },
@@ -167,7 +166,6 @@ class _LoginFormState extends State<LoginForm> {
                       controller: _passwordController,
                       autocorrect: false,
                       obscureText: true,
-                      autovalidate: true,
                       validator: (_) {
                         return !state.isPasswordValid
                             ? "Invalid Password"

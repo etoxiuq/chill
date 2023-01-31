@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 abstract class MessagingState extends Equatable {
   const MessagingState();
+
   @override
   List<Object> get props => [];
 }
@@ -14,7 +15,7 @@ class MessagingLoadingState extends MessagingState {}
 class MessagingLoadedState extends MessagingState {
   final Stream<QuerySnapshot> messageStream;
 
-  MessagingLoadedState({this.messageStream});
+  MessagingLoadedState({required this.messageStream});
 
   @override
   List<Object> get props => [messageStream];

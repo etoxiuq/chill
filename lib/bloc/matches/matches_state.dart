@@ -14,7 +14,7 @@ class LoadUserState extends MatchesState {
   final Stream<QuerySnapshot> matchedList;
   final Stream<QuerySnapshot> selectedList;
 
-  LoadUserState({this.matchedList, this.selectedList});
+  LoadUserState({required this.matchedList, required this.selectedList});
 
   @override
   List<Object> get props => [matchedList, selectedList];

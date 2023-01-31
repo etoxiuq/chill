@@ -10,7 +10,7 @@ abstract class MessageEvent extends Equatable {
 class ChatStreamEvent extends MessageEvent {
   final String currentUserId;
 
-  ChatStreamEvent({this.currentUserId});
+  ChatStreamEvent({required this.currentUserId});
 
   @override
   List<Object> get props => [currentUserId];

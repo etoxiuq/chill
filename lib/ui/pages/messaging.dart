@@ -129,7 +129,7 @@ class _MessagingState extends State<Messaging> {
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       );
                     }
-                    if (snapshot.data.documents.isNotEmpty) {
+                    if (snapshot.data.docs.isNotEmpty) {
                       return Expanded(
                         child: Column(
                           children: <Widget>[
@@ -139,11 +139,10 @@ class _MessagingState extends State<Messaging> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return MessageWidget(
                                     currentUserId: widget.currentUser.uid,
-                                    messageId: snapshot
-                                        .data.documents[index].documentID,
+                                    messageId: snapshot.data.docs[index].id,
                                   );
                                 },
-                                itemCount: snapshot.data.documents.length,
+                                itemCount: snapshot.data.docs.length,
                               ),
                             )
                           ],
@@ -168,16 +167,17 @@ class _MessagingState extends State<Messaging> {
                     children: <Widget>[
                       GestureDetector(
                         onTap: () async {
-                          File photo =
-                              await FilePicker.getFile(type: FileType.image);
-                          if (photo != null) {
+                          FilePickerResult result = await FilePicker.platform
+                              .pickFiles(type: FileType.image);
+                          if (result != null) {
+                            File file = File(result.files.single.path);
                             _messagingBloc.add(
                               SendMessageEvent(
                                 message: Message(
                                     text: null,
                                     senderName: widget.currentUser.name,
                                     senderId: widget.currentUser.uid,
-                                    photo: photo,
+                                    photo: file,
                                     selectedUserId: widget.selectedUser.uid),
                               ),
                             );

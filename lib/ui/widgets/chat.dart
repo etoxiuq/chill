@@ -13,18 +13,23 @@ class ChatWidget extends StatefulWidget {
   final String userId, selectedUserId;
   final Timestamp creationTime;
 
-  const ChatWidget({this.userId, this.selectedUserId, this.creationTime});
+  const ChatWidget({
+    required this.userId,
+    required this.selectedUserId,
+    required this.creationTime,
+  });
 
   @override
   _ChatWidgetState createState() => _ChatWidgetState();
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
-  MessageRepository messageRepository = MessageRepository();
-  Chat chat;
-  User user;
+  MessageRepository messageRepository =
+      MessageRepository(firestore: FirebaseFirestore.instance);
+  late Chat chat;
+  late User user;
 
-  getUserDetail() async {
+  Future<Chat> getUserDetail() async {
     user = await messageRepository.getUserDetail(userId: widget.selectedUserId);
     Message message = await messageRepository
         .getLastMessage(
@@ -37,9 +42,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       return Chat(
         name: user.name,
         photoUrl: user.photo,
-        lastMessage: null,
-        lastMessagePhoto: null,
-        timestamp: null,
+        timestamp: Timestamp.now(),
       );
     } else {
       return Chat(
@@ -81,7 +84,7 @@ class _ChatWidgetState extends State<ChatWidget> {
         if (!snapshot.hasData) {
           return Container();
         } else {
-          Chat chat = snapshot.data;
+          Chat? chat = snapshot.data;
           return GestureDetector(
             onTap: () async {
               await openChat();
@@ -103,7 +106,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                           ],
                         ),
                         actions: <Widget>[
-                          FlatButton(
+                          TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -114,7 +117,7 @@ class _ChatWidgetState extends State<ChatWidget> {
                               ),
                             ),
                           ),
-                          FlatButton(
+                          TextButton(
                             onPressed: () async {
                               await deleteChat();
                               Navigator.of(context).pop();
@@ -161,13 +164,13 @@ class _ChatWidgetState extends State<ChatWidget> {
                               user.name,
                               style: TextStyle(fontSize: size.height * 0.03),
                             ),
-                            chat.lastMessage != null
+                            chat?.lastMessage != null
                                 ? Text(
-                                    chat.lastMessage,
+                                    chat!.lastMessage,
                                     overflow: TextOverflow.fade,
                                     style: TextStyle(color: Colors.grey),
                                   )
-                                : chat.lastMessagePhoto == null
+                                : chat?.lastMessagePhoto == null
                                     ? Text("Chat Room Open")
                                     : Row(
                                         children: <Widget>[
@@ -189,8 +192,8 @@ class _ChatWidgetState extends State<ChatWidget> {
                         ),
                       ],
                     ),
-                    chat.timestamp != null
-                        ? Text(timeago.format(chat.timestamp.toDate()))
+                    chat?.timestamp != null
+                        ? Text(timeago.format(chat?.timestamp?.toDate()))
                         : Text(timeago.format(widget.creationTime.toDate()))
                   ],
                 ),

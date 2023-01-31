@@ -9,7 +9,7 @@ class Profile extends StatelessWidget {
   final _userRepository;
   final userId;
 
-  Profile({@required UserRepository userRepository, String userId})
+  Profile({required UserRepository userRepository, required String userId})
       : assert(userRepository != null && userId != null),
         _userRepository = userRepository,
         userId = userId;

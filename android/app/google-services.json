@@ -1,0 +1,154 @@
+{
+  "project_info": {
+    "project_number": "969166695288",
+    "project_id": "flutter-clone-2023",
+    "storage_bucket": "flutter-clone-2023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969166695288:android:17f7aedd6359fe7a35368d",
+        "android_client_info": {
+          "package_name": "com.appzler.deliverzler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJs2_cWlQqRDZ7fkltR3grjcIv53As70o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "969166695288-6jfsg93ntgin55ok9tbpsip1bmn95b0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notWhatsappLol"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969166695288:android:060c2d14afc7b96035368d",
+        "android_client_info": {
+          "package_name": "com.etoxiuq.instagram_clone_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJs2_cWlQqRDZ7fkltR3grjcIv53As70o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "969166695288-6jfsg93ntgin55ok9tbpsip1bmn95b0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notWhatsappLol"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969166695288:android:6d76af909e90724535368d",
+        "android_client_info": {
+          "package_name": "com.example.chill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJs2_cWlQqRDZ7fkltR3grjcIv53As70o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "969166695288-6jfsg93ntgin55ok9tbpsip1bmn95b0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notWhatsappLol"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969166695288:android:f080e59de58b34a635368d",
+        "android_client_info": {
+          "package_name": "com.example.not_whatsapp_lol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJs2_cWlQqRDZ7fkltR3grjcIv53As70o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969166695288-v4jtf3tdgfon6fsqlv7tcl5gj3j952v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "969166695288-6jfsg93ntgin55ok9tbpsip1bmn95b0n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notWhatsappLol"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

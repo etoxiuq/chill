@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/models/user.dart';
 import 'package:chill/repositories/searchRepository.dart';
 import 'package:meta/meta.dart';
+
 import './bloc.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
@@ -10,7 +12,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   SearchBloc({@required SearchRepository searchRepository})
       : assert(searchRepository != null),
-        _searchRepository = searchRepository;
+        _searchRepository = searchRepository,
+        super(null);
 
   @override
   SearchState get initialState => InitialSearchState();

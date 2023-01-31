@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/repositories/userRepository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:meta/meta.dart';
+
 import './bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   UserRepository _userRepository;
 
-  ProfileBloc({@required UserRepository userRepository})
+  ProfileBloc({required UserRepository userRepository})
       : assert(userRepository != null),
-        _userRepository = userRepository;
-
-  @override
-  ProfileState get initialState => ProfileState.empty();
+        _userRepository = userRepository,
+        super(ProfileState.empty());
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
@@ -80,14 +79,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Stream<ProfileState> _mapSubmittedToState(
-      {File photo,
-      String gender,
-      String name,
-      String userId,
-      DateTime age,
-      GeoPoint location,
-      String interestedIn}) async* {
+  Stream<ProfileState> _mapSubmittedToState({
+    required File photo,
+    required String gender,
+    required String name,
+    required String? userId,
+    required DateTime age,
+    required GeoPoint location,
+    required String interestedIn,
+  }) async* {
     yield ProfileState.loading();
     try {
       await _userRepository.profileSetup(

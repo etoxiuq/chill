@@ -1,39 +1,40 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/repositories/userRepository.dart';
 import 'package:chill/ui/validators.dart';
-import 'package:meta/meta.dart';
+
 import './bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   UserRepository _userRepository;
 
-  SignUpBloc({@required UserRepository userRepository})
+  SignUpBloc({required UserRepository userRepository})
       : assert(userRepository != null),
-        _userRepository = userRepository;
+        _userRepository = userRepository,
+        super(SignUpState.empty());
 
   @override
   SignUpState get initialState => SignUpState.empty();
 
-  @override
-  Stream<SignUpState> transformEvents(
-    Stream<SignUpEvent> events,
-    Stream<SignUpState> Function(SignUpEvent event) next,
-  ) {
-    final nonDebounceStream = events.where((event) {
-      return (event is! EmailChanged || event is! PasswordChanged);
-    });
-
-    final debounceStream = events.where((event) {
-      return (event is EmailChanged || event is PasswordChanged);
-    }).debounceTime(Duration(milliseconds: 300));
-
-    return super.transformEvents(
-      nonDebounceStream.mergeWith([debounceStream]),
-      next,
-    );
-  }
+  // @override
+  // Stream<SignUpState> transformEvents(
+  //   Stream<SignUpEvent> events,
+  //   Stream<SignUpState> Function(SignUpEvent event) next,
+  // ) {
+  //   final nonDebounceStream = events.where((event) {
+  //     return (event is! EmailChanged || event is! PasswordChanged);
+  //   });
+  //
+  //   final debounceStream = events.where((event) {
+  //     return (event is EmailChanged || event is PasswordChanged);
+  //   }).debounceTime(Duration(milliseconds: 300));
+  //
+  //   return super.transformEvents(
+  //     nonDebounceStream.mergeWith([debounceStream]),
+  //     next,
+  //   );
+  // }
 
   @override
   Stream<SignUpState> mapEventToState(
@@ -52,16 +53,19 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Stream<SignUpState> _mapEmailChangedToState(String email) async* {
     yield state.update(
       isEmailValid: Validators.isValidEmail(email),
+      isPasswordValid: true,
     );
   }
 
   Stream<SignUpState> _mapPasswordChangedToState(String password) async* {
-    yield state.update(isEmailValid: Validators.isValidPassword(password));
+    yield state.update(
+        isEmailValid: Validators.isValidPassword(password),
+        isPasswordValid: true);
   }
 
   Stream<SignUpState> _mapSignUpWithCredentialsPressedToState({
-    String email,
-    String password,
+    required String email,
+    required String password,
   }) async* {
     yield SignUpState.loading();
 

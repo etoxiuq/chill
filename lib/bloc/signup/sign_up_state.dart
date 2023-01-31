@@ -10,12 +10,13 @@ class SignUpState {
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 
-  SignUpState(
-      {@required this.isEmailValid,
-      @required this.isPasswordValid,
-      @required this.isSubmitting,
-      @required this.isSuccess,
-      @required this.isFailure});
+  SignUpState({
+    required this.isEmailValid,
+    required this.isPasswordValid,
+    required this.isSubmitting,
+    required this.isSuccess,
+    required this.isFailure,
+  });
 
   //initial state
   factory SignUpState.empty() {
@@ -59,8 +60,8 @@ class SignUpState {
   }
 
   SignUpState update({
-    bool isEmailValid,
-    bool isPasswordValid,
+    required bool isEmailValid,
+    required bool isPasswordValid,
   }) {
     return copyWith(
       isEmailValid: isEmailValid,
@@ -68,16 +69,17 @@ class SignUpState {
       isSubmitting: false,
       isFailure: false,
       isSuccess: false,
+      isSubmitEnabled: false,
     );
   }
 
   SignUpState copyWith({
-    bool isEmailValid,
-    bool isPasswordValid,
-    bool isSubmitEnabled,
-    bool isSubmitting,
-    bool isSuccess,
-    bool isFailure,
+    required bool isEmailValid,
+    required bool isPasswordValid,
+    required bool isSubmitEnabled,
+    required bool isSubmitting,
+    required bool isSuccess,
+    required bool isFailure,
   }) {
     return SignUpState(
         isEmailValid: isEmailValid ?? this.isEmailValid,

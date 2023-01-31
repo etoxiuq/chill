@@ -1,16 +1,18 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/repositories/userRepository.dart';
-import 'package:flutter/cupertino.dart';
+
 import './bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository _userRepository;
 
-  AuthenticationBloc({@required UserRepository userRepository})
+  AuthenticationBloc({required UserRepository userRepository})
       : assert(userRepository != null),
-        _userRepository = userRepository;
+        _userRepository = userRepository,
+        super(Uninitialized());
 
   @override
   AuthenticationState get initialState => Uninitialized();

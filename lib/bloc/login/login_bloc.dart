@@ -1,38 +1,43 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:chill/repositories/userRepository.dart';
 import 'package:chill/ui/validators.dart';
-import 'package:meta/meta.dart';
-import './bloc.dart';
 import 'package:rxdart/rxdart.dart';
+
+import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   UserRepository _userRepository;
 
-  LoginBloc({@required UserRepository userRepository})
+  LoginBloc({required UserRepository userRepository})
       : assert(userRepository != null),
-        _userRepository = userRepository;
+        _userRepository = userRepository,
+        super(LoginState.empty());
 
   @override
   LoginState get initialState => LoginState.empty();
 
-  @override
-  Stream<LoginState> transformEvents(
-    Stream<LoginEvent> events,
-    Stream<LoginState> Function(LoginEvent event) next,
-  ) {
-    final nonDebounceStream = events.where((event) {
-      return (event is! EmailChanged || event is! PasswordChanged);
-    });
+  // @override
+  // Stream<LoginState> transformEvents(
+  //   Stream<LoginEvent> events,
+  //   Stream<LoginState> Function(LoginEvent event) next,
+  // ) {
+  //   final nonDebounceStream = events.where((event) {
+  //     return (event is! EmailChanged || event is! PasswordChanged);
+  //   });
+  //
+  //   final debounceStream = events.where((event) {
+  //     return (event is EmailChanged || event is PasswordChanged);
+  //   }).debounceTime(Duration(milliseconds: 300));
+  //   return super.transformEvents(
+  //     nonDebounceStream.mergeWith([debounceStream]),
+  //     next,
+  //   );
+  // }
 
-    final debounceStream = events.where((event) {
-      return (event is EmailChanged || event is PasswordChanged);
-    }).debounceTime(Duration(milliseconds: 300));
-
-    return super.transformEvents(
-      nonDebounceStream.mergeWith([debounceStream]),
-      next,
-    );
+  EventTransformer<LoginEvent> transform<LoginEvent>(Duration duration) {
+    return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
   }
 
   @override
@@ -60,8 +65,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapLoginWithCredentialsPressedToState({
-    String email,
-    String password,
+    required String email,
+    required String password,
   }) async* {
     yield LoginState.loading();
 
